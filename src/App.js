@@ -1,11 +1,14 @@
 import React from 'react';
 import Plot1 from "./js/DSB-AM"
 
+
+
 function App() {
   return (
-    <div className="App">
-       <Plot1 />
-    </div>
+
+        <div className="App">
+            <Plot1 />
+        </div>
   );
 }
 

@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import Plot from "react-plotly.js"
 import { Slider } from 'rsuite';
 import "../CSS/plot1.css"
-import {fft} from 'fft-js';
 
 let messageFreq = 100e+3;
 
@@ -48,7 +47,7 @@ function USSB(t,mt,ct,cfreq) {
     let ssb = [];
     let mht = carrierSignal(1,messageFreq,t);
     let cht = sin(1,cfreq,t);
-    for(let i =0;i < mt.length; i++){
+    for(let i =0;i < t.length; i++){
         ssb.push((mt[i]*ct[i])-(mht[i]*cht[i]));
     }
     return ssb
@@ -64,30 +63,42 @@ function LSSB(t,mt,ct,cfreq) {
     return ssb
 }
 
-function fftMagnitude (signal){
-    let mag = [];
-    let fft1 = fft(signal);
-    for(let i = 0;i<fft1.length;i++){
-        mag.push(fft[i][0]);
+function USSBSC(t,mt,ct,cfreq,a) {
+    let ssb = [];
+    let mht = carrierSignal(1,messageFreq,t);
+    let cht = sin(1,cfreq,t);
+    for(let i =0;i < t.length; i++){
+        ssb.push(((1+a*mt[i])*ct[i])-(mht[i]*cht[i]));
     }
-    return mag;
+    return ssb
 }
 
-function fftFrequencies(signal) {
-    let freq = [];
-    let fft1 = fft(signal);
-    for(let i = 0;i<fft1.length;i++){
-        freq.push(fft[i][0]);
+
+function LSSBSC(t,mt,ct,cfreq,a) {
+    let ssb = [];
+    let mht = carrierSignal(1,messageFreq,t);
+    let cht = sin(1,cfreq,t);
+    for(let i =0;i < mt.length; i++){
+        ssb.push(((1+a*mt[i])*ct[i])+(mht[i]*cht[i]));
     }
-    return freq;
+    return ssb
 }
+
+
+// function FM(t,AmplitudeOfMt,AmplitudeOfCt,cFreq,b){
+//     let fm = [];
+//     let pi = Math.PI;
+//     for(let i = 0;i < t.length;i++) {
+//         fm.push(AmplitudeOfCt*Math.cos((2*pi*cFreq*t) + (AmplitudeOfMt*b*Math.sin(2*pi*messageFreq*t))))
+//     }
+//     return fm
+// }
 
 function Plot1() {
     const [freq, setFreq] = useState(550e+3);
     let time = t(0,25e-6,0.01e-7);
     let ct = carrierSignal(1,freq,time)
     let mt = sin(1,messageFreq,time)
-    let ussb = USSB(time,mt,ct,freq);
     function handleChangeStart(freq){
         return setFreq(freq)
     };
@@ -166,14 +177,35 @@ function Plot1() {
                 data={[
                 {
                     x: time,
-                    y: USSB(time,mt,ct,freq),
+                    y: LSSB(time,mt,ct,freq),
                     marker: {color: 'red'},
                 }
                 ]}
                 layout={{width: 400, height: 400, title: 'SSB-lower'}}
+            />
+            <Plot
+                data={[
+                {
+                    x: time,
+                    y: USSBSC(time,mt,ct,freq,1),
+                    marker: {color: 'red'},
+                }
+                ]}
+                layout={{width: 400, height: 400, title: 'SSB-SC upper'}}
+            />
+            <Plot
+                data={[
+                {
+                    x: time,
+                    y: LSSBSC(time,mt,ct,freq,1),
+                    marker: {color: 'red'},
+                }
+                ]}
+                layout={{width: 400, height: 400, title: 'SSB-SC lower'}}
             />
         </div>
     )
 }
 
 export default Plot1
+
