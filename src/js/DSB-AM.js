@@ -95,10 +95,12 @@ function LSSBSC(t,mt,ct,cfreq,a) {
 // }
 
 function Plot1() {
+    let AmplitudeOfMt = 1
+    let AmplitudeOfCt = 1
     const [freq, setFreq] = useState(550e+3);
     let time = t(0,25e-6,0.01e-7);
-    let ct = carrierSignal(1,freq,time)
-    let mt = sin(1,messageFreq,time)
+    let ct = carrierSignal(AmplitudeOfCt,freq,time)
+    let mt = sin(AmplitudeOfMt,messageFreq,time)
     function handleChangeStart(freq){
         return setFreq(freq)
     };
@@ -161,7 +163,7 @@ function Plot1() {
                     marker: {color: 'red'},
                 }
                 ]}
-                layout={{width: 400, height: 400, title: 'DSBSC-AM signal'}}
+                layout={{width: 400, height: 400, title: 'DSB-SC-AM signal'}}
             />
             <Plot
                 data={[
