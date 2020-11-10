@@ -27,7 +27,7 @@ function sin(A,freq,t) {
     return yvalues;
 }
 
-function AM(c,m) { //c => carrier signal m => message signal 
+function DSBSC(c,m) { //c => carrier signal m => message signal 
     let modulatedSignal = [];
     for(let i = 0;i <= m.length;i++) {
         modulatedSignal.push(m[i]*c[i])
@@ -35,7 +35,7 @@ function AM(c,m) { //c => carrier signal m => message signal
     return modulatedSignal;
 }
 
-function DSBSC(c,m,a) { //c => carrier signal m => message signal 
+function AM(c,m,a) { //c => carrier signal m => message signal 
     let modulatedSignal = [];
     for(let i = 0;i <= m.length;i++) {
         modulatedSignal.push((1+(a*m[i]))*c[i])
@@ -43,7 +43,7 @@ function DSBSC(c,m,a) { //c => carrier signal m => message signal
     return modulatedSignal;
 }
 
-function USSB(t,mt,ct,cfreq) {
+function USSBSC(t,mt,ct,cfreq) {
     let ssb = [];
     let mht = carrierSignal(1,messageFreq,t);
     let cht = sin(1,cfreq,t);
@@ -53,7 +53,7 @@ function USSB(t,mt,ct,cfreq) {
     return ssb
 }
 
-function LSSB(t,mt,ct,cfreq) {
+function LSSBSC(t,mt,ct,cfreq) {
     let ssb = [];
     let mht = carrierSignal(1,messageFreq,t);
     let cht = sin(1,cfreq,t);
@@ -63,7 +63,7 @@ function LSSB(t,mt,ct,cfreq) {
     return ssb
 }
 
-function USSBSC(t,mt,ct,cfreq,a) {
+function USSB(t,mt,ct,cfreq,a) {
     let ssb = [];
     let mht = carrierSignal(1,messageFreq,t);
     let cht = sin(1,cfreq,t);
@@ -74,7 +74,7 @@ function USSBSC(t,mt,ct,cfreq,a) {
 }
 
 
-function LSSBSC(t,mt,ct,cfreq,a) {
+function LSSB(t,mt,ct,cfreq,a) {
     let ssb = [];
     let mht = carrierSignal(1,messageFreq,t);
     let cht = sin(1,cfreq,t);
@@ -149,61 +149,61 @@ function Plot1() {
                 data={[
                 {
                     x: time,
-                    y: AM(ct,mt),
+                    y: DSBSC(ct,mt),
                     marker: {color: 'red'},
                 }
                 ]}
-                layout={{width: 400, height: 400, title: 'AM signal'}}
+                layout={{width: 400, height: 400, title: 'DSBSC signal'}}
             />
             <Plot
                 data={[
                 {
                     x: time,
-                    y: DSBSC(ct,mt,1),
+                    y: AM(ct,mt,1),
                     marker: {color: 'red'},
                 }
                 ]}
-                layout={{width: 400, height: 400, title: 'DSB-SC-AM signal'}}
+                layout={{width: 400, height: 400, title: 'Conventional AM signal'}}
             />
             <Plot
                 data={[
                 {
                     x: time,
-                    y: USSB(time,mt,ct,freq),
+                    y: USSBSC(time,mt,ct,freq),
                     marker: {color: 'red'},
                 }
                 ]}
-                layout={{width: 400, height: 400, title: 'SSB-upper'}}
+                layout={{width: 400, height: 400, title: 'SSB-SC-upper'}}
             />
             <Plot
                 data={[
                 {
                     x: time,
-                    y: LSSB(time,mt,ct,freq),
+                    y: LSSBSC(time,mt,ct,freq),
                     marker: {color: 'red'},
                 }
                 ]}
-                layout={{width: 400, height: 400, title: 'SSB-lower'}}
+                layout={{width: 400, height: 400, title: 'SSB-SC-lower'}}
             />
             <Plot
                 data={[
                 {
                     x: time,
-                    y: USSBSC(time,mt,ct,freq,1),
+                    y: USSB(time,mt,ct,freq,1),
                     marker: {color: 'red'},
                 }
                 ]}
-                layout={{width: 400, height: 400, title: 'SSB-SC upper'}}
+                layout={{width: 400, height: 400, title: 'SSB upper'}}
             />
             <Plot
                 data={[
                 {
                     x: time,
-                    y: LSSBSC(time,mt,ct,freq,1),
+                    y: LSSB(time,mt,ct,freq,1),
                     marker: {color: 'red'},
                 }
                 ]}
-                layout={{width: 400, height: 400, title: 'SSB-SC lower'}}
+                layout={{width: 400, height: 400, title: 'SSB lower'}}
             />
         </div>
     )
